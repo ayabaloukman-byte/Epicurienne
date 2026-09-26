@@ -5,6 +5,30 @@ function formatPrice(price) {
   return `${price.toLocaleString('fr-FR')} FCFA`
 }
 
+// Citations éditoriales, une par catégorie (dans l'ordre de la carte source).
+// Contenu éditorial fixe, non issu de la base de données.
+const CATEGORY_QUOTES = [
+  { text: 'Noir comme le diable, chaud comme l’enfer, pur comme un ange, doux comme l’amour.', author: 'Talleyrand' },
+  { text: 'Ce n’est pas ce que nous avons, mais ce dont nous jouissons, qui fait notre abondance.', author: 'Épicure' },
+  { text: 'La découverte d’un mets nouveau fait plus pour le bonheur du genre humain que la découverte d’une étoile.', author: 'Brillat-Savarin' },
+  { text: 'Convier quelqu’un, c’est se charger de son bonheur tant qu’il est sous notre toit.', author: 'Brillat-Savarin' },
+  { text: 'Dis-moi ce que tu manges, je te dirai ce que tu es.', author: 'Brillat-Savarin' },
+  { text: 'Un dessert sans fromage est une belle à qui il manque un œil.', author: 'Brillat-Savarin' },
+  { text: 'La cuisine, c’est quand les choses ont le goût de ce qu’elles sont.', author: 'Curnonsky' },
+]
+
+function DottedRow({ left, right, leftStyle }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+      <span style={leftStyle}>{left}</span>
+      <span style={{ flex: 1, borderBottom: '1px dotted var(--rule)', transform: 'translateY(-4px)' }} />
+      <span className="price" style={{ color: 'var(--gold-deep)', fontSize: 13.5, flexShrink: 0 }}>
+        {right}
+      </span>
+    </div>
+  )
+}
+
 export default function Menu() {
   const [categories, setCategories] = useState([])
   const [productsByCategory, setProductsByCategory] = useState({})
@@ -75,33 +99,103 @@ export default function Menu() {
     )
   }
 
+  function scrollToCategory(id) {
+    setActiveCategory(id)
+    document.getElementById(`cat-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <div>
-      <header style={{ paddingBlock: '40px 24px', textAlign: 'center' }}>
+      {/* Couverture */}
+      <header style={{ paddingBlock: '48px 40px', textAlign: 'center', borderBottom: '1px solid var(--rule)' }}>
         <div className="container">
           <div
             style={{
-              width: 44,
-              height: 44,
-              margin: '0 auto 14px',
-              border: '1px solid var(--gold)',
-              borderRadius: '50%',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: "'Playfair Display', serif",
+              justifyContent: 'space-between',
+              fontSize: 11,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+              marginBottom: 28,
+            }}
+          >
+            <span>Cotonou</span>
+            <span>Édition 2026</span>
+          </div>
+
+          <h1 style={{ fontSize: 'clamp(30px, 8vw, 42px)', letterSpacing: '0.02em', color: 'var(--gold-deep)' }}>
+            L'Épicurienne
+          </h1>
+          <p style={{ margin: '2px 0 0', fontSize: 12, letterSpacing: '0.3em', color: 'var(--muted)' }}>CAFÉ</p>
+          <p style={{ margin: '18px 0 0', fontStyle: 'italic', color: 'var(--ink)' }}>
+            L'art de vivre, à toute heure
+          </p>
+
+          <p
+            style={{
+              margin: '22px 0 0',
+              fontSize: 11,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
               color: 'var(--gold-deep)',
             }}
           >
-            É
-          </div>
-          <h1 style={{ fontSize: 'clamp(26px, 7vw, 34px)' }}>L'Épicurienne</h1>
-          <p style={{ margin: '6px 0 0', fontStyle: 'italic', color: 'var(--muted)' }}>
-            L'art de vivre, à toute heure
+            Cafés Signature · La Table Dressée · Brunchs &amp; Douceurs
           </p>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', marginTop: 30 }}>
+            <span style={{ width: 28, height: 1, background: 'var(--rule)' }} />
+            <span style={{ fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase' }}>La Carte</span>
+            <span style={{ width: 28, height: 1, background: 'var(--rule)' }} />
+          </div>
         </div>
       </header>
 
+      {/* Édito */}
+      <section className="container" style={{ paddingBlock: 36, borderBottom: '1px solid var(--rule)' }}>
+        <div className="eyebrow">L'Édito</div>
+        <h2 style={{ fontSize: 24, marginTop: 6 }}>Une parenthèse choisie</h2>
+        <p style={{ marginTop: 16, lineHeight: 1.7, fontSize: 15 }}>
+          L'Épicurienne n'est pas tout à fait un café. C'est une parenthèse.
+        </p>
+        <p style={{ marginTop: 10, lineHeight: 1.7, fontSize: 15 }}>
+          Un lieu où l'on s'assoit pour le plaisir de s'asseoir, où le café se déguste comme un rituel et la
+          table se raconte. Ici, l'art de vivre n'est pas un décor. C'est une manière d'être.
+        </p>
+        <p style={{ marginTop: 14, fontStyle: 'italic', color: 'var(--muted)' }}>
+          Bienvenue chez vous. — L'Épicurienne
+        </p>
+
+        <div style={{ marginTop: 28 }}>
+          <div className="eyebrow">Sommaire</div>
+          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {categories.map((cat, i) => (
+              <button
+                key={cat.id}
+                onClick={() => scrollToCategory(cat.id)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  font: 'inherit',
+                  color: 'inherit',
+                }}
+              >
+                <DottedRow
+                  left={cat.name}
+                  right={String(i + 3).padStart(2, '0')}
+                  leftStyle={{ fontSize: 14.5 }}
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Navigation rapide (usage mobile) */}
       <nav
         style={{
           position: 'sticky',
@@ -119,10 +213,7 @@ export default function Menu() {
           {categories.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => {
-                setActiveCategory(cat.id)
-                document.getElementById(`cat-${cat.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }}
+              onClick={() => scrollToCategory(cat.id)}
               style={{
                 flexShrink: 0,
                 borderRadius: 999,
@@ -141,45 +232,105 @@ export default function Menu() {
         </div>
       </nav>
 
-      <main className="container" style={{ paddingBlock: 32, display: 'flex', flexDirection: 'column', gap: 40 }}>
-        {categories.map((cat) => (
-          <section key={cat.id} id={`cat-${cat.id}`} style={{ scrollMarginTop: 60 }}>
-            <div className="eyebrow">Catégorie</div>
-            <h2 style={{ fontSize: 22, marginTop: 4 }}>{cat.name}</h2>
-            {cat.description && (
-              <p style={{ color: 'var(--muted)', marginTop: 6, fontSize: 15 }}>{cat.description}</p>
-            )}
-            <hr className="rule" style={{ margin: '16px 0' }} />
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-              {(productsByCategory[cat.id] ?? []).map((product) => (
-                <div key={product.id}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'baseline' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                      <span style={{ fontWeight: 600 }}>{product.name}</span>
-                      {product.is_signature && <span className="badge-signature">Signature</span>}
-                    </div>
-                    <span className="price" style={{ color: 'var(--gold-deep)' }}>
-                      {formatPrice(product.price)}
-                    </span>
-                  </div>
-                  {product.description && (
-                    <p style={{ margin: '4px 0 0', color: 'var(--muted)', fontSize: 14.5, lineHeight: 1.5 }}>
-                      {product.description}
-                    </p>
-                  )}
+      <main className="container" style={{ paddingBlock: 32, display: 'flex', flexDirection: 'column', gap: 48 }}>
+        {categories.map((cat, i) => {
+          const quote = CATEGORY_QUOTES[i]
+          return (
+            <section key={cat.id} id={`cat-${cat.id}`} style={{ scrollMarginTop: 60 }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 11, letterSpacing: '0.2em', color: 'var(--muted)' }}>
+                  {String(i + 3).padStart(2, '0')}
                 </div>
-              ))}
-              {(productsByCategory[cat.id] ?? []).length === 0 && (
-                <p style={{ color: 'var(--muted)', fontSize: 14 }}>Aucun produit disponible pour le moment.</p>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 12,
+                    marginTop: 6,
+                  }}
+                >
+                  <span style={{ color: 'var(--gold)' }}>•</span>
+                  <h2
+                    style={{
+                      fontSize: 20,
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: 'var(--gold-deep)',
+                    }}
+                  >
+                    {cat.name}
+                  </h2>
+                  <span style={{ color: 'var(--gold)' }}>•</span>
+                </div>
+                {cat.description && (
+                  <p style={{ color: 'var(--muted)', marginTop: 8, fontSize: 14 }}>{cat.description}</p>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 26 }}>
+                {(productsByCategory[cat.id] ?? []).map((product) => (
+                  <div key={product.id}>
+                    <DottedRow
+                      left={
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                          <strong style={{ fontWeight: 600 }}>{product.name}</strong>
+                          {product.is_signature && <span className="badge-signature">Signature</span>}
+                        </span>
+                      }
+                      right={formatPrice(product.price)}
+                    />
+                    {product.description && (
+                      <p style={{ margin: '4px 0 0', color: 'var(--muted)', fontSize: 14, fontStyle: 'italic' }}>
+                        {product.description}
+                      </p>
+                    )}
+                  </div>
+                ))}
+                {(productsByCategory[cat.id] ?? []).length === 0 && (
+                  <p style={{ color: 'var(--muted)', fontSize: 14 }}>Aucun produit disponible pour le moment.</p>
+                )}
+              </div>
+
+              {quote && (
+                <div style={{ textAlign: 'center', marginTop: 32 }}>
+                  <p style={{ fontStyle: 'italic', color: 'var(--muted)', fontSize: 14, maxWidth: '42ch', margin: '0 auto' }}>
+                    « {quote.text} »
+                  </p>
+                  <p
+                    style={{
+                      marginTop: 6,
+                      fontSize: 11,
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      color: 'var(--gold-deep)',
+                    }}
+                  >
+                    {quote.author}
+                  </p>
+                </div>
               )}
-            </div>
-          </section>
-        ))}
+            </section>
+          )
+        })}
       </main>
 
-      <footer style={{ textAlign: 'center', paddingBlock: 32, color: 'var(--muted)', fontSize: 12.5 }}>
-        L'Épicurienne · Cotonou
+      <footer
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingBlock: 20,
+          color: 'var(--muted)',
+          fontSize: 11,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          borderTop: '1px solid var(--rule)',
+        }}
+        className="container"
+      >
+        <span>L'Épicurienne</span>
+        <span>Cotonou</span>
       </footer>
     </div>
   )
