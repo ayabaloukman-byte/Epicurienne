@@ -1,0 +1,88 @@
+:root {
+  --bg: #faf6ec;
+  --surface: #ffffff;
+  --ink: #2c2417;
+  --muted: #8a7c63;
+  --gold: #a9814a;
+  --gold-deep: #8a6a3a;
+  --rule: #e4d9c2;
+  --danger: #a3402f;
+  --unavailable: #b8ac93;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  margin: 0;
+  text-wrap: balance;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-inline: 20px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+
+.rule {
+  height: 1px;
+  border: none;
+  background: var(--rule);
+}
+
+.badge-signature {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  border: 1px solid var(--gold);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.price {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
