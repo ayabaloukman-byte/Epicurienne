@@ -32,8 +32,8 @@ body {
 h1,
 h2,
 h3 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 600;
+  font-family: 'Cormorant', Georgia, serif;
+  font-weight: 500;
   margin: 0;
   text-wrap: balance;
 }

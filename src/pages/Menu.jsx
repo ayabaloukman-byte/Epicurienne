@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import CategoryIcon from '../components/CategoryIcon'
 
 function formatPrice(price) {
   return `${price.toLocaleString('fr-FR')} FCFA`
@@ -216,6 +217,9 @@ export default function Menu() {
               onClick={() => scrollToCategory(cat.id)}
               style={{
                 flexShrink: 0,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
                 borderRadius: 999,
                 padding: '8px 16px',
                 fontSize: 13,
@@ -226,6 +230,7 @@ export default function Menu() {
                 border: activeCategory === cat.id ? 'none' : '1px solid var(--rule)',
               }}
             >
+              <CategoryIcon name={cat.name} />
               {cat.name}
             </button>
           ))}

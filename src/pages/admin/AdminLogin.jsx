@@ -82,6 +82,6 @@ const buttonStyle = {
   background: 'var(--gold)',
   color: '#201a10',
   fontSize: 15,
-  fontFamily: "'Playfair Display', serif",
+  fontFamily: "'Cormorant', serif",
   cursor: 'pointer',
 }
