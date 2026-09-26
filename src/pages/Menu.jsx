@@ -275,7 +275,11 @@ export default function Menu() {
                       left={
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                           <strong style={{ fontWeight: 600 }}>{product.name}</strong>
-                          {product.is_signature && <span className="badge-signature">Signature</span>}
+                          {product.is_signature && (
+                            <span className="badge-signature">
+                              {product.name === 'Le Festin des Rois' ? 'So Epic' : 'Signature'}
+                            </span>
+                          )}
                         </span>
                       }
                       right={formatPrice(product.price)}
